@@ -1,7 +1,7 @@
 const express = require('express');
-const cors = require('cors');
 const app = express();
 const videosRoutes = require('./routes/videos');
+const cors = require('cors');
 
 app.use(express.json());
 
@@ -9,16 +9,9 @@ app.use(express.static('./public'))
 
 app.use(cors());
 
-app
-    .get('/videos', (req, res) => {
-
-        const videosData = fs.readFileSync('../data/videos.json');
-        let videosDataParsed = JSON.parse(videosData);
-
-        res.json(videosDataParsed)
-    });
+app.use('/videos', videosRoutes);
 
 app
     .listen(8080, () => {
-        console.log('Hello World')
+        console.log('Hello World');
     })
