@@ -86,9 +86,7 @@ router
         const videosData = readVideos();
         const likedVideo = videosData.find(video => video.id === videoId);
 
-        // likedVideo.likes = ((parseInt(likedVideo.likes)) + 1).toString();
-
-        // likedVideo.likes = ((+likedVideo.likes.replace(/,/g, '')) + 1).toString();
+        likedVideo.likes = ((+likedVideo.likes.replace(/,/g, '')) + 1).toLocaleString('en-US');
 
         fs.writeFileSync('./data/videos.json', JSON.stringify(videosData));
         
@@ -130,8 +128,7 @@ router
             name: authors[Math.floor(Math.random() * authors.length)],
             comment: req.body.comment,
             likes: 0,
-            timestamp: Date.now(),
-            // id: uniqid()
+            timestamp: Date.now()
         }
 
         selectedVideo.comments.push(newComment);
@@ -146,17 +143,17 @@ router
 router  
     .put('/:videoId/comments/:commentId/likes', (req, res) => {
         const videoId = req.params.videoId;
-        const commentId= req.params.commentId;
+        const commentTimestamp= req.body.timestamp;
         const videosData = readVideos();
 
         const selectedVideo = videosData.find(video => video.id === videoId);
-        const likedComment = selectedVideo.comments.find(comment => comment.id === commentId);
+        const likedComment = selectedVideo.comments.find(comment => comment.timestamp === commentTimestamp);
 
-        // likedComment.likes++
+        likedComment.likes++;
 
         fs.writeFileSync('./data/videos.json', JSON.stringify(videosData));
         
-        res.status(200).json(likedComment);
+        res.status(200).json(selectedVideo);
     });
 
 
@@ -164,37 +161,14 @@ router
 router
     .delete('/:videoId/comments/:commentId', (req, res) => {
         const videoId = req.params.videoId;
-        const commentId= req.params.commentId;
+        const commentTimestamp = req.body.timestamp;
         const videosData = readVideos();
-        
+
         const selectedVideo = videosData.find(video => video.id === videoId);
-        // console.log(selectedVideo.comments)
-        const selectedComment = selectedVideo.comments.find(comment => comment.id === commentId);
-        console.log(selectedComment)
+        const deletedComment = selectedVideo.comments.find(comment => comment.timestamp === commentTimestamp);
+        const filteredComments = selectedVideo.comments.filter(comment => comment !== deletedComment);
 
-        const selectedVideoUpdated = selectedVideo.comments
-
-        // selectedVideo.comments.replace()
-
-
-        // for(let i = 0; i > selectedVideo.comments.length; i++) {
-        //     // if(selectedVideo.comments[i] === selectedComment) {
-        //     //     console.log(selectedComment)
-        //     //     // selectedVideo.comments.splice(i, 1)
-        //     // }
-        //     console.log(selectedVideo.comments[i])
-        // }
-
-
-        
-
-        // console.log(selectedVideo.comments)
-
-        // for(let i = 0; i > videosData.length; i++) {
-        //     if(videosData[i] === selectedVideo) {
-        //         console.log(videosData.splice(i, 1, selectedVideoUpdated))
-        //     }
-        // }
+        selectedVideo.comments = filteredComments;
 
         fs.writeFileSync('./data/videos.json', JSON.stringify(videosData));
         
