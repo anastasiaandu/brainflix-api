@@ -13,6 +13,7 @@ const readVideos = () => {
 
 
 //create endpoint to get all videos
+//GET
 router
     .get('/', (req, res) => {
         const videosData = readVideos();
@@ -30,7 +31,8 @@ router
     });
 
 
-//create endpoint to get selected video
+//create endpoint to get specific video
+//GET
 router
     .get('/:id', (req, res) => {
         const videoId = req.params.id;
@@ -47,6 +49,7 @@ router
 
 
 //create endpoint to post new video
+//POST
 router
     .post('/', (req, res) => {
 
@@ -80,6 +83,7 @@ router
 
 
 //create endpoint to like a video
+//PUT
 router  
     .put('/:videoId/likes', (req, res) => {
         const videoId = req.params.videoId;
@@ -96,6 +100,7 @@ router
 
 
 // create endpoint to delete a video
+//DELETE
 router
     .delete('/:id', (req, res) => {
         const videoId = req.params.id;
@@ -110,6 +115,7 @@ router
 
 
 //create endpoint to post a new comment to videos
+//POST
 router
     .post('/:id/comments', (req, res) => {
         
@@ -140,6 +146,7 @@ router
 
 
 //create endpoint to like a comment on a video
+//PUT
 router  
     .put('/:videoId/comments/:commentId/likes', (req, res) => {
         const videoId = req.params.videoId;
@@ -158,6 +165,7 @@ router
 
 
 //create endpoint to delete a comment on a video
+//DELETE
 router
     .delete('/:videoId/comments/:commentId', (req, res) => {
         const videoId = req.params.videoId;
